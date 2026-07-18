@@ -1,0 +1,19 @@
+name: Deploy to Zeabur
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Zeabur
+        uses: zeabur/deploy-action@v1
+        with:
+          project_name: make-women-health-great-again
+          service_name: hpv-vaccine-news
+          token: ${{ secrets.ZEABUR_TOKEN }}
