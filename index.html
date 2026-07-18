@@ -19,12 +19,31 @@
     }
   }
 })();
+function setupIframeLoaders(){
+  var iframes=document.querySelectorAll('iframe[data-chart-id]');
+  iframes.forEach(function(iframe){
+    var container=document.createElement('div');
+    container.className='chart-loader-container';
+    iframe.parentNode.insertBefore(container,iframe);
+    container.appendChild(iframe);
+    var spinner=document.createElement('div');
+    spinner.className='chart-spinner';
+    container.appendChild(spinner);
+    iframe.onload=function(){spinner.style.display='none';};
+    setTimeout(function(){
+      if(iframe.contentWindow&&iframe.contentWindow.document&&iframe.contentWindow.document.body){
+        spinner.style.display='none';
+      }
+    },5000);
+  });
+}
+window.addEventListener('load',setupIframeLoaders);
 </script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html, body{overflow-x:hidden}
 html{scroll-behavior:smooth;font-family:"Noto Serif CJK SC","Source Han Serif SC","思源宋体",Georgia,"Times New Roman",serif;font-size:18px;line-height:2.05;color:#4c4c4c}
-body{background:url("IMG_4025_opt.jpg") no-repeat center fixed;background-size:cover;min-height:100vh;position:relative}
+body{background:url("IMG_4025_small.jpg") no-repeat center fixed;background-size:cover;min-height:100vh;position:relative}
 body::before{content:"";position:absolute;top:100vh;left:0;right:0;bottom:0;background:rgba(255,255,255,0.5);z-index:0;pointer-events:none}
 a{color:#7C8CDE;text-decoration:none;transition:color .3s}
 a:hover{color:#5a6dbf}
@@ -50,11 +69,11 @@ nav a:hover,nav a.active{border-bottom-color:#7C8CDE;color:#7C8CDE}
 .section-divider::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.18);z-index:0}
 .section-divider h2{position:relative;z-index:1;font-size:2.4rem;font-weight:700;color:#fff;letter-spacing:.08em;margin-bottom:.3rem;line-height:1.3}
 .title-container{max-width:1100px;margin:0 auto;padding:0 1.5rem;text-align:left;position:relative;z-index:1}
-#part1{background-image:url("Gemini_Generated_Image_1_opt.jpg")}
-#part2{background-image:url("Gemini_Generated_Image_2_opt.jpg")}
-#part3{background-image:url("Gemini_Generated_Image_3_opt.jpg")}
-#part4{background-image:url("Gemini_Generated_Image_4_opt.jpg")}
-#part5{background-image:url("Gemini_Generated_Image_5_opt.jpg")}
+#part1{background-image:url("Gemini_Generated_Image_1_small.jpg")}
+#part2{background-image:url("Gemini_Generated_Image_2_small.jpg")}
+#part3{background-image:url("Gemini_Generated_Image_3_small.jpg")}
+#part4{background-image:url("Gemini_Generated_Image_4_small.jpg")}
+#part5{background-image:url("Gemini_Generated_Image_5_small.jpg")}
 .reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
@@ -70,6 +89,9 @@ nav a:hover,nav a.active{border-bottom-color:#7C8CDE;color:#7C8CDE}
 .chart-wide{max-width:100%;margin:1.5rem auto;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.06)}
 .chart-frame{position:relative;width:100%;height:0;overflow:hidden}
 .chart-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;background:transparent}
+.chart-loader-container{position:relative}
+.chart-spinner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border:3px solid #f0f0f0;border-top-color:#7C8CDE;border-radius:50%;animation:spin 1s linear infinite;z-index:10;background:rgba(255,255,255,0.8)}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
 .chart-wrapper.side-by-side{display:flex;flex-wrap:wrap;gap:1.5rem;margin:1.5rem 0}
 .chart-wrapper.side-by-side .chart-item{flex:1 1 280px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06)}
 .chart-wrapper.side-by-side .chart-item .chart-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;background:transparent}
@@ -86,7 +108,7 @@ nav a:hover,nav a.active{border-bottom-color:#7C8CDE;color:#7C8CDE}
 footer{text-align:center;padding:2rem 1.5rem;font-size:.82rem;color:#B3C5D7;border-top:1px solid #D7E0E9}
 @media(max-width:768px){
   body{background:none!important}
-  body::after{content:"";position:fixed!important;top:0;left:0;width:100vw;height:100vh;background:url("IMG_4025_mobile_opt.jpg") no-repeat center center!important;background-size:cover!important;z-index:-10!important;pointer-events:none}
+  body::after{content:"";position:fixed!important;top:0;left:0;width:100vw;height:100vh;background:url("IMG_4025_mobile.jpg") no-repeat center center!important;background-size:cover!important;z-index:-10!important;pointer-events:none}
   .section-divider{background-attachment:scroll!important;background-size:cover!important;background-position:center center!important}
   html{font-size:16px;font-variant-numeric:tabular-nums;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif!important}
   .hero-container{padding-top:100px;padding-bottom:8vh}
@@ -171,7 +193,7 @@ img{loading:lazy}
             <p>中国与印度合计贡献了<strong>全球近38%</strong>的疾病负担。</p>
         </div>
         <div class="chart-wide reveal">
-            <div class="chart-frame" style="padding-bottom:71%"><iframe loading="lazy" src="https://dycharts.com/xshow/index.html?id=c_b0f1bf2f7eb13b5c03075fc3c97b8eb6" width="1000" height="710" scrolling="no" frameborder="0" align=""></iframe></div>
+            <div class="chart-frame" style="padding-bottom:71%"><iframe loading="lazy" data-chart-id="1" src="https://dycharts.com/xshow/index.html?id=c_b0f1bf2f7eb13b5c03075fc3c97b8eb6" width="1000" height="710" scrolling="no" frameborder="0" align=""></iframe></div>
         <p class="chart-hint">鼠标悬停查看详细占比</p>
         </div>
     </div>
@@ -190,14 +212,14 @@ img{loading:lazy}
             <p><strong style="color:#5A6ABF">HPV疫苗</strong>防护的核心目标就是覆盖<strong style="color:#5A6ABF">高危型病毒</strong>。</p>
         </div>
         <div class="chart-wide reveal">
-            <div class="chart-frame" style="padding-bottom:46.4%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_d19341f1aebb3b4b127d50fcec39b212" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
+            <div class="chart-frame" style="padding-bottom:46.4%"><iframe loading="lazy" data-chart-id="2" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_d19341f1aebb3b4b127d50fcec39b212" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
         <p class="chart-hint">鼠标悬停查看详细占比</p>
         </div>
         <div class="section-body reveal">
             <p>同时，它们也是<strong style="color:#5A6ABF">肛门癌、外阴癌、口腔癌</strong>等<strong>多种癌症的重要病因</strong>。</p>
         </div>
         <div class="chart-wide reveal">
-            <div class="chart-frame" style="padding-bottom:60%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_22a398aab732d59c2797181e8e8d8f22" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
+            <div class="chart-frame" style="padding-bottom:60%"><iframe loading="lazy" data-chart-id="3" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_22a398aab732d59c2797181e8e8d8f22" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
         <p class="chart-hint">鼠标悬停查看详细占比</p>
         </div>
         <div class="section-body reveal">
@@ -205,7 +227,7 @@ img{loading:lazy}
             <p>唯有<strong>持续性感染</strong>才会沿着病变一路发展为<strong>宫颈癌</strong>。</p>
             <p>这一过程往往长达<strong>十年以上</strong>。</p>
             <div style="max-width:80%;margin:1.5rem auto;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.08)">
-                <img src="chatgpt_hpv_opt.jpg" alt="HPV感染自然史示意" style="width:100%;height:auto;display:block" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3E图片加载失败%3C/text%3E%3C/svg%3E'">
+                <img src="chatgpt_hpv_small.jpg" alt="HPV感染自然史示意" style="width:100%;height:auto;display:block">
             </div>
             <p class="chart-hint" style="margin-bottom:1.2rem">该图为ChatGPT-Image2绘制</p>
             <p>漫长的潜伏期，</p>
@@ -228,7 +250,7 @@ img{loading:lazy}
             <p>中国以<strong>14.49万</strong>例的庞大数字占全球病例约<strong>23.98%</strong>的占比，</p>
             <p>标准化年发病率在<strong>20年间</strong>从<strong>9.21/10万</strong>持续攀升至<strong>13.0/10万</strong>，年均增速<strong style="color:#5A6ABF">超1.74%</strong>。</p>
         <div class="chart-wide reveal" style="max-width:70%;margin:1.5rem auto">
-            <div class="chart-frame" style="padding-bottom:73%"><iframe loading="lazy" src="https://dycharts.com/xshow/index.html?id=c_423e45a8912c6e39ade20087ef5d8815" width="700" height="510" scrolling="no" frameborder="0" align=""></iframe></div>
+            <div class="chart-frame" style="padding-bottom:73%"><iframe loading="lazy" data-chart-id="4" src="https://dycharts.com/xshow/index.html?id=c_423e45a8912c6e39ade20087ef5d8815" width="700" height="510" scrolling="no" frameborder="0" align=""></iframe></div>
             <p class="chart-hint" style="margin-top:10px">鼠标悬停查看详细占比</p>
         </div>
 
@@ -245,12 +267,12 @@ img{loading:lazy}
             </div>
             <div class="flex-chart">
                 <div class="chart-wide reveal" style="margin:3rem 0">
-                    <img src="young_face_opt.jpg" alt="" style="width:100%;height:auto;display:block;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.08)" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3E图片加载失败%3C/text%3E%3C/svg%3E'">
+                    <img src="young_face_small.jpg" alt="" style="width:100%;height:auto;display:block;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.08)">
                 </div>
             </div>
         </div>
         <div class="chart-wide reveal">
-            <div class="chart-frame" style="padding-bottom:66.7%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_1227b940ff7c1e6838f5590a3434672f" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
+            <div class="chart-frame" style="padding-bottom:66.7%"><iframe loading="lazy" data-chart-id="5" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_1227b940ff7c1e6838f5590a3434672f" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
         <p class="chart-hint">鼠标悬停查看详细占比</p>
         </div>
     </div>
@@ -274,11 +296,11 @@ img{loading:lazy}
         </div>
         <div class="chart-wrapper side-by-side reveal">
             <div class="chart-item">
-                <div class="chart-frame" style="padding-bottom:72.9%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_8a628d63a0ab50ce9eec1d6ac2f6d9d0" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
+                <div class="chart-frame" style="padding-bottom:72.9%"><iframe loading="lazy" data-chart-id="6" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_8a628d63a0ab50ce9eec1d6ac2f6d9d0" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
                 <p class="chart-hint">鼠标悬停查看详细占比</p>
             </div>
             <div class="chart-item">
-                <div class="chart-frame" style="padding-bottom:72.9%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_94d01f83fbae496f08072bfd76f58a0c" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
+                <div class="chart-frame" style="padding-bottom:72.9%"><iframe loading="lazy" data-chart-id="7" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_94d01f83fbae496f08072bfd76f58a0c" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
                 <p class="chart-hint">鼠标悬停查看详细占比</p>
             </div>
         </div>
@@ -304,7 +326,7 @@ img{loading:lazy}
             <p>就足以铺开5年内<strong>全国</strong>适龄女孩的免疫蓝图。</p>
         </div>
         <div class="chart-wide reveal">
-            <div class="chart-frame" style="padding-bottom:56.7%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_ce336fcb686f9b9416a8a15fc07e5621" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
+            <div class="chart-frame" style="padding-bottom:56.7%"><iframe loading="lazy" data-chart-id="8" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_ce336fcb686f9b9416a8a15fc07e5621" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
         <p class="chart-hint">鼠标悬停查看详细占比</p>
         </div>
     </div>
@@ -321,10 +343,10 @@ img{loading:lazy}
             <p><strong>90%</strong>的女孩<strong>15岁</strong>前完成接种，<strong>70%</strong>的女性接受高效筛查，<strong>90%</strong>的患者获得治疗。</p>
         </div>
         <div class="chart-wide reveal">
-<img src="hpv_history_opt.jpg" alt="HPV疫苗发展历程" style="width:100%;height:auto;display:block" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3E图片加载失败%3C/text%3E%3C/svg%3E'">
+<img src="hpv_history_small.jpg" alt="HPV疫苗发展历程" style="width:100%;height:auto;display:block">
         </div>
         <div class="chart-wide reveal">
-<img src="policy_timeline_opt.jpg" alt="中国各省市 HPV 疫苗普惠接种政策时间演进表" style="width:100%;height:auto;display:block" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3E图片加载失败%3C/text%3E%3C/svg%3E'">
+<img src="policy_timeline_small.jpg" alt="中国各省市 HPV 疫苗普惠接种政策时间演进表" style="width:100%;height:auto;display:block">
         </div>
         <div class="section-body reveal">
             <p>为了响应号召攻克疾病负担，中国从地方试点起步，</p>
@@ -357,7 +379,7 @@ img{loading:lazy}
             <p>足以为数百名女孩筑起免疫屏障。</p>
         </div>
         <div class="chart-wide reveal">
-            <div class="chart-frame" style="padding-bottom:63.8%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_b94022a13004daa29308ab3df5775715" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
+            <div class="chart-frame" style="padding-bottom:63.8%"><iframe loading="lazy" data-chart-id="9" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_b94022a13004daa29308ab3df5775715" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
         <p class="chart-hint">鼠标悬停查看详细占比</p>
         </div>
     </div>
@@ -389,7 +411,7 @@ img{loading:lazy}
         <div class="flex-layout reveal">
             <div class="flex-chart">
                 <div class="chart-wide reveal" style="margin:0">
-                    <div class="chart-frame" style="padding-bottom:72.9%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_96278fd1fe9523974e74cc1dbd328a04" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
+                    <div class="chart-frame" style="padding-bottom:72.9%"><iframe loading="lazy" data-chart-id="10" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_96278fd1fe9523974e74cc1dbd328a04" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
         <p class="chart-hint">鼠标悬停查看详细占比</p>
                 </div>
             </div>
@@ -431,18 +453,18 @@ img{loading:lazy}
                 </div>
                 <div class="flex-chart">
                     <div class="chart-wide reveal" style="margin:3.5rem 0">
-                        <img src="algorithm_mist_opt.jpg" alt="" style="width:100%;height:auto;display:block;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.08)" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3E图片加载失败%3C/text%3E%3C/svg%3E'">
+                        <img src="algorithm_mist_small.jpg" alt="" style="width:100%;height:auto;display:block;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.08)">
                     </div>
                 </div>
             </div>
         </div>
         <div class="chart-wrapper side-by-side reveal">
             <div class="chart-item">
-                <div class="chart-frame" style="padding-bottom:85%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_5fc555650e13cc6fc71ae3c1be6b9558" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
+                <div class="chart-frame" style="padding-bottom:85%"><iframe loading="lazy" data-chart-id="11" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_5fc555650e13cc6fc71ae3c1be6b9558" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
                 <p class="chart-hint">鼠标悬停查看详细占比</p>
             </div>
             <div class="chart-item">
-                <div class="chart-frame" style="padding-bottom:85%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_1c02d9bc9cfaf6b057c82d126088aae1" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
+                <div class="chart-frame" style="padding-bottom:85%"><iframe loading="lazy" data-chart-id="12" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_1c02d9bc9cfaf6b057c82d126088aae1" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
                 <p class="chart-hint">鼠标悬停查看详细占比</p>
             </div>
         </div>
@@ -456,7 +478,7 @@ img{loading:lazy}
         </div>
         <div style="max-width:80%;margin:1.5rem auto">
             <div class="chart-wide reveal" style="margin:0">
-                <div class="chart-frame" style="padding-bottom:67.8%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_402f642cab7ee01f234b28489981a34d" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
+                <div class="chart-frame" style="padding-bottom:67.8%"><iframe loading="lazy" data-chart-id="13" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_402f642cab7ee01f234b28489981a34d" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
         <p class="chart-hint">鼠标悬停查看详细占比</p>
             </div>
         </div>
@@ -477,11 +499,11 @@ img{loading:lazy}
         </div>
         <div class="chart-wrapper side-by-side reveal">
             <div class="chart-item">
-                <div class="chart-frame" style="padding-bottom:85%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_3c3ca67a9ccb4b1e42c57a70a0b31e2a" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
+                <div class="chart-frame" style="padding-bottom:85%"><iframe loading="lazy" data-chart-id="14" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_3c3ca67a9ccb4b1e42c57a70a0b31e2a" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
                 <p class="chart-hint">鼠标悬停查看详细占比</p>
             </div>
             <div class="chart-item">
-                <div class="chart-frame" style="padding-bottom:85%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_e2bc57713b68f0b41890c2be81bf791e" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
+                <div class="chart-frame" style="padding-bottom:85%"><iframe loading="lazy" data-chart-id="15" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_e2bc57713b68f0b41890c2be81bf791e" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
                 <p class="chart-hint">鼠标悬停查看详细占比</p>
             </div>
         </div>
@@ -494,7 +516,7 @@ img{loading:lazy}
         <div class="flex-layout reveal">
             <div class="flex-chart" style="flex:11">
                 <div class="chart-wide reveal" style="margin:3.5rem 0 0 0">
-                    <div class="chart-frame" style="padding-bottom:85%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_e9c7ff21f109889fdd1df2eb06d8c4f1" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
+                    <div class="chart-frame" style="padding-bottom:85%"><iframe loading="lazy" data-chart-id="16" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_e9c7ff21f109889fdd1df2eb06d8c4f1" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
         <p class="chart-hint">鼠标悬停查看详细占比</p>
                 </div>
             </div>
@@ -545,7 +567,7 @@ img{loading:lazy}
             </div>
             <div class="flex-chart" style="flex:3">
                 <div class="chart-wide reveal" style="margin:1.5rem 0 0 0">
-                    <div class="chart-frame" style="padding-bottom:85%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_89416fae5a0108973bf8d4f928c34df3" frameborder="0" allowfullscreen="" style="background:transparent"></iframe>
+                    <div class="chart-frame" style="padding-bottom:85%"><iframe loading="lazy" data-chart-id="17" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_89416fae5a0108973bf8d4f928c34df3" frameborder="0" allowfullscreen="" style="background:transparent"></iframe>
         <p class="chart-hint">鼠标悬停查看详细占比</p>
                 </div>
             </div>
@@ -581,7 +603,7 @@ img{loading:lazy}
         <div class="flex-layout reveal">
             <div class="flex-chart" style="flex:3">
 <div class="chart-wide reveal" style="margin:3.5rem 0">
-                    <div class="chart-frame" style="padding-bottom:85%"><iframe loading="lazy" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_81a1028e4f25dc154f5b0783461cff38" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
+                    <div class="chart-frame" style="padding-bottom:85%"><iframe loading="lazy" data-chart-id="18" allowtransparency="true" src="https://dycharts.com/xshow/index.html?id=c_81a1028e4f25dc154f5b0783461cff38" frameborder="0" allowfullscreen="" style="background:transparent"></iframe></div>
         <p class="chart-hint">鼠标悬停查看详细占比</p>
                 </div>
             </div>
