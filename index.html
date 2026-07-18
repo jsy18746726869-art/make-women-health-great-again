@@ -677,7 +677,9 @@ img{loading:lazy}
         </div>
     </div>
 </section>
-
+<div id="simple-switch-btn" style="position:fixed;bottom:20px;right:20px;z-index:999;background:#7C8CDE;color:#fff;padding:10px 16px;border-radius:25px;font-size:.85rem;box-shadow:0 2px 12px rgba(124,140,222,0.4);cursor:pointer;transition:all .3s">
+  切换到简洁版
+</div>
 <footer>
     <p>数据新闻作品 · 免疫可及：HPV疫苗政策落地过程中的认知壁垒</p>
 </footer>
@@ -768,6 +770,13 @@ img{loading:lazy}
     console.error('Error:',message,source,lineno);
     return true;
   };
+  
+  var switchBtn=document.getElementById('simple-switch-btn');
+  if(switchBtn){
+    switchBtn.addEventListener('click',function(){
+      window.location.href='simple.html';
+    });
+  }
 })();
 </script>
 </body>
